@@ -1,0 +1,98 @@
+# SECURITY LOGGING AND MONITORING FAILURES
+------------------------------------------
+
+* Introduction
+--------------
+There are many ways to protect our applications, services, and systems from attacks. We can leverage and implement preemptive controls to secure our systems and users before the code is 
+released. However, we aren’t done once our code is released; writing and maintaining secure applications is a full-time process. Not only do we need to ensure new code is secure, but we 
+also need to ensure our existing code and data are continually monitored for anomalous and suspicious behavior.
+
+Of course, monitoring our application is far easier said than done.
+
+When we decide to implement a monitoring solution, we should consider the following:
+
+	. Does our monitoring solution collect on important activity (i.e., login attempts/failures, code-related errors, known potential attack patterns)?
+	. Are we collecting enough information about individual events to ensure we have actionable alerts and data?
+	. Are logs stored in multiple locations?
+	. Are logging levels configured so that the appropriate party is made aware if an issue is detected?
+	. Are logs reviewed?
+
+Depending on our access level, reviewing an environment for logging and monitoring related activity can be challenging. In many situations, an organization may not provide us with direct 
+access to these systems. Therefore, to assess these types of issues, it is not uncommon to conduct interviews with key personnel accompanied by potential samples of logs. In some cases, 
+these interviews may be accompanied by a light offensive test designed to determine whether or not the environment is logging in an effective and actionable manner.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* The Impacts of Poor Logging and Monitoring
+--------------------------------------------
+In the following example, we’ll explore several common questions and mock answers to identify unacceptable logging and monitoring. In addition, we will also review a sample of logs.
+
+Let’s dive in!
+
+Question: What activities are logged by the logging systems?
+---------
+Response: We log all connections.
+---------
+Question: What information is included within these logs?
+---------
+Response: Mainly just the timestamp and the URL requested.
+---------
+Question: How regularly are logs reviewed?
+---------
+Response: We only review logs if we see a lot of traffic.
+---------
+Question: How are high-value events flagged and reviewed?
+---------
+Response: They aren’t.
+---------
+Question: Where are collected logs stored?
+---------
+Response: On the web server.
+---------
+
+Now, look at their provided log samples by running the command cat system.log in the terminal.
+
+We can see how poorly configured the organization’s logging is based purely on the log sample and their responses to the above questions.
+
+Let’s discuss their responses:
+
+While it’s great their logging all connections, there are several potential issues with this approach. First, this is expensive. In the long term, this type of logging will usually 
+generate many logs requiring storage. While the storage price has decreased over time, continual growth from logging can be expensive. While there is certainly a place for these costs in 
+some instances, the return on investment, in this case, is very low, partly because of the other issues we can see with their logging. Additionally, logging in this manner can lead to an 
+overload of logs. If an incident occurs, it may be too cumbersome to identify exactly when are where an incident began.
+
+We can also see several issues regarding the information included within these logs. While it is good they are maintaining timestamps, the rest of the logs lack sufficient information. In 
+this case, we do not see what type of requests are being sent (GET, POST, PUT, etc.), and we can’t see the operations being performed here. Many modern applications will have robust 
+functionality where a single page or endpoint may handle multiple operations. A simple URL may not be enough to maintain an audit log properly.
+
+The answers related to how this organization reviews logs present further issues. Not having a set protocol for how and when logs are reviewed increases the risk of attacks and issues 
+going unnoticed. To ensure we obtain value from our logs, we must regularly review them for anomalous or problematic behavior.
+
+Their response to the final question, the location of the logs, is another issue, unfortunately. While convenient, storing logs on a single source, especially where those logs are 
+generated, is a huge risk. If logs are not maintained on a separate server, there is a high risk of log loss if the server crashes or is compromised. If the server that stores logs is 
+compromised and controls are not applied meaningfully, an organization may no longer be able to trust its logs.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -72,7 +72,141 @@ Their response to the final question, the location of the logs, is another issue
 generated, is a huge risk. If logs are not maintained on a separate server, there is a high risk of log loss if the server crashes or is compromised. If the server that stores logs is 
 compromised and controls are not applied meaningfully, an organization may no longer be able to trust its logs.
 
+bash
+----
+
+Terminal
+
+$ cat system.log
+/admin  - Fri, 19 May 2023 18:16:40 GMT
+/admin  - Fri, 19 May 2023 18:16:43 GMT
+/login  - Fri, 19 May 2023 18:17:26 GMT
+/update  - Fri, 19 May 2023 18:17:62 GMT
+/search  - Fri, 19 May 2023 18:17:87 GMT
+/search  - Fri, 19 May 2023 18:18:12 GMT
+/search  - Fri, 19 May 2023 18:19:65 GMT
+/index  - Fri, 19 May 2023 18:20:26 GMT
+/login  - Fri, 19 May 2023 18:20:39 GMT
+/save  - Fri, 19 May 2023 18:21:98 GMT
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Enable Proper Logging and Monitoring
+--------------------------------------
+In the following example, we’ll explore several common questions and mock answers to identify acceptable logging and monitoring. In addition, we will also review a sample of logs.
+
+Let’s dive in!
+
+Question: What activities are logged by the logging systems?
+---------
+
+Response: We log all high-value transactions. This includes logins, account changes, and any action related to administrative functions. We also log any activity which is flagged by our 
+---------
+web application firewall.
+
+Question: What information is included within these logs?
+---------
+
+Response: Our logs include the following information: URL, Parameters, Timestamp, Source IP, Time to process the request, and Other operational data
+---------
+
+Question: How regularly are logs reviewed?
+---------
+Response: We regularly review our logs for performance and security issues.
+---------
+
+Question: How are high-value events flagged and reviewed?
+---------
+
+Response: Outside of the regular reviews, we have various automated thresholds configured. They are designed to alert our security and development teams of anomalous behavior. Our web 
+---------
+application firewall alerts our security operations center (SOC) team. They also review alerts if a host is found sending a large amount of traffic in a short period.
+
+
+Question: Where are collected logs stored?
+---------
+
+Response: Logs are collected and stored within a central logging system. These systems are regularly backed up on a secondary system which remains offline when not in the backup process.
+---------
+
+Now, look at their provided log samples by running the command cat logs.json in the terminal.
+
+Reviewing the provided log sample and the client’s responses, we see a more satisfactory logging solution. Compared to the standards set by OWASP, this organization is well within logging 
+expectations.
+
+Unlike the previous example, this organization stores logs in multiple locations, has defined policies related to log reviews, and logs requests and events appropriately.
+
+bash
+----
+$ cat logs.json
+{
+	"status_code":"403 Forbidden",
+	"url":"/search",
+	"host":"internal-qa.acme.com",
+	"parameters": [
+		"lang":"en",
+		"query":"test' AND 'SQL'='SQL';-- -"
+	],
+	"user_account":"hacker321"
+	"timestamp":"Fri, 19 May 2023 18:16:43 GMT",
+	"execution_time":"N/A",
+	"src_ip":"73.164.52.234:57162",
+	"Firewall Status":"Blocked",
+	"Firewall_Description":"SQL Injection Detected",
+},
+{
+	"status_code":"200 OK",
+	"url":"/search",
+	"host":"internal-qa.acme.com",
+	"parameters": [
+		"lang":"en",
+		"query":"tennis"
+	],
+	"user_account":"serrenaw"
+	"timestamp":"Fri, 19 May 2023 18:19:43 GMT",
+	"execution_time":"00:00:731",
+	"src_ip":"21.75.125.48:57162",
+	"Firewall Status":"Allowed",
+	"Firewall_Description":"N/A",
+	"":""
+}$ 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Conclusion
+------------
+Throughout this exercise, we’ve had the opportunity to see a small glimpse into security logging and how we can log effectively. While it is important that our code is secure, it is 
+equally important that we are continually monitoring and assessing our logs for any security and performance risks. While logging is incredibly customizable and will vary greatly from 
+organization to organization, we want to ensure our logs contain helpful information designed to help us reconstruct and investigate potential issues.
+
+While maybe not as exciting as writing secure code, ensuring our code is properly logged and monitored can help keep us up to date on our applications, identify existing and new risks, 
+and help better prepare our organizations for potential issues.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
